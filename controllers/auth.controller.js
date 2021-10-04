@@ -4,9 +4,7 @@ const keys = require('../keys')
 const User = require('../models/user.model')
 
 module.exports.login = async (req, res) => {
-    const candidate = await User.findOne({
-        login: req.body.login
-    })
+    const candidate = await User.findOne({login: req.body.login})
     if (candidate) {
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, candidate.password)
         if (isPasswordCorrect) {
@@ -23,6 +21,16 @@ module.exports.login = async (req, res) => {
     }
 }
 
-module.exports.createUser = (req, res) => {
-
+module.exports.createUser = async (req, res) => {
+    const candidate = await User.findOne({login: req.body.login})
+    if (!candidate) {
+        const user = new User({
+            login: req.body.login,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+        })
+        await user.save()
+        res.status(201).json({user})
+    } else {
+        res.status(409).json({message: 'This login is used'})
+    }
 }

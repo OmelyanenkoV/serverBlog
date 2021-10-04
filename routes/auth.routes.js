@@ -5,8 +5,8 @@ const router = Router()
 // /api/auth/admin/login
 router.post('/admin/login', login)
 
-// /api/auth/admin/create
-router.post('/admin/create', createUser)
+// /api/auth/admin/createUser
+router.post('/admin/createUser', createUser)
 
 
 
