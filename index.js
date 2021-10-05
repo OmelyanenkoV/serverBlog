@@ -7,7 +7,10 @@ const passportJWT = require('passport-jwt')
 
 const passportStrategy = require('./middleware/passport-straegy')
 const key = require('./keys')
+// Routes
 const authRoutes = require('./routes/auth.routes')
+const postRoutes = require('./routes/post.routes')
+const commentRoutes = require('./routes/comment.routes')
 
 const app = express()
 
@@ -26,6 +29,8 @@ app.use(bodyParser.json())
 
 // router
 app.use('/api/auth', authRoutes)
+app.use('/api/post', postRoutes)
+app.use('/api/comment', commentRoutes)
 
 app.listen(PORT, () => console.log(`The server listens on port ${PORT} .....`))
 
