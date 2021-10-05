@@ -14,10 +14,20 @@ module.exports.login = async (req, res) => {
             }, keys.JWT, {expiresIn: 60 * 60})
             res.status(200).json({token})
         } else {
-            res.status(404).json({message: 'Login or password not correct'})
+            res.status(404).json(
+                {
+                    messageEn: 'Login or password not correct',
+                    messageRu: 'Логин или пароль не верны'
+                }
+            )
         }
     } else {
-        res.status(404).json({message: 'User not found'})
+        res.status(404).json(
+            {
+                messageEn: 'User not found',
+                messageRu: 'Пользователь не найден'
+            }
+        )
     }
 }
 
@@ -31,6 +41,11 @@ module.exports.createUser = async (req, res) => {
         await user.save()
         res.status(201).json({user})
     } else {
-        res.status(409).json({message: 'This login is used'})
+        res.status(409).json(
+            {
+                messageEn: 'This login is used',
+                messageRu: 'Этот логин уже используется'
+            }
+        )
     }
 }
