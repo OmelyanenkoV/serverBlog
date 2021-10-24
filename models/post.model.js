@@ -21,6 +21,10 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
+    imageName: {
+        type: String,
+        required: true
+    },
     comments: [
         {
             type: Schema.Types.ObjectId,

@@ -1,10 +1,15 @@
 const Post = require('../models/post.model')
+const fs = require('fs')
+const path = require('path');
+
 // Admin
 module.exports.createNewPost = async (req, res) => {
+    const imageToBase64 = 'data:image/jpg;base64,' +  fs.readFileSync(path.resolve(__dirname, `../static/${req.file.filename}`), {encoding: 'base64'})
     const post =  new Post({
         title: req.body.title,
         content: req.body.text,
-        imageUrl: `/${req.file.filename}`
+        imageUrl: imageToBase64,
+        imageName: req.file.filename
     })
     try {
         await post.save()
@@ -50,6 +55,8 @@ module.exports.updatePostById = async (req, res) => {
 
 module.exports.deletePostById = async (req, res) => {
     try {
+        const post = await Post.findById(req.params.id)
+        fs.unlinkSync(path.resolve(__dirname, `../static/${post.imageName}`))
         await Post.deleteOne({_id: req.params.id})
         res.status(200).json({messageEn: 'Delete successfully', messageRu: 'Успешно удалено'})
     } catch (e) {
@@ -70,8 +77,8 @@ module.exports.getAllPosts = async (req, res) => {
 
 module.exports.getPostById = async (req, res) => {
     try {
-        await Post.findOne(req.params.id).populate('comments').exec((error, post) => {
-            res.status(200).json(post)
+        await Post.findById(req.params.id).populate('comments').exec((error, post) => {
+            res.json(post)
         })
     } catch (e) {
         res.status(500).json(e)
