@@ -5,7 +5,7 @@ const cors = require('cors')
 const passport = require('passport')
 const passportJWT = require('passport-jwt')
 
-const passportStrategy = require('./middleware/passport-straegy')
+const passportStrategy = require('./middleware/passport-strategy')
 const key = require('./keys')
 // Routes
 const authRoutes = require('./routes/auth.routes')

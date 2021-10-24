@@ -25,8 +25,8 @@ module.exports.getAllAdminPosts = async (req, res) => {
 
 module.exports.getAdminPostById = async (req, res) => {
     try {
-        await Post.findOne(req.params.id).populate('comments').exec((error, post) => {
-            res.status(200).json(post)
+        await Post.findById(req.params.id).populate('comments').exec((error, post) => {
+            res.json(post)
         })
     } catch (e) {
         res.status(500).json(e)
