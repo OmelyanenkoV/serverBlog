@@ -37,6 +37,13 @@ router.delete(
     postController.deletePostById
 )
 
+// Analytics
+router.get(
+    '/admin/get/analytics',
+    passport.authenticate('jwt', { session: false }),
+    postController.getAnalytics
+)
+
 // Base
 // /api/post
 
@@ -45,5 +52,7 @@ router.get('/', postController.getAllPosts)
 router.get('/:id', postController.getPostById)
 
 router.put('/:id', postController.addView)
+
+
 
 module.exports = router

@@ -66,6 +66,26 @@ module.exports.deletePostById = async (req, res) => {
     }
 }
 
+module.exports.getAnalytics = async (req, res) => {
+    try {
+        const posts = await Post.find()
+        const labels = posts.map(post => post.title)
+        const data = {
+            comments: {
+                labels,
+                data: posts.map(post => post.comments.length)
+            },
+            views: {
+                labels,
+                data: posts.map(post => post.views)
+            }
+        }
+        res.status(200).json(data)
+    } catch (e) {
+        res.status(500).json(e)
+    }
+}
+
 // Basic
 
 module.exports.getAllPosts = async (req, res) => {
