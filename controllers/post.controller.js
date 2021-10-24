@@ -1,4 +1,5 @@
 const Post = require('../models/post.model')
+const Comment = require('../models/comment.model')
 const fs = require('fs')
 const path = require('path');
 
@@ -56,8 +57,9 @@ module.exports.updatePostById = async (req, res) => {
 module.exports.deletePostById = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-        fs.unlinkSync(path.resolve(__dirname, `../static/${post.imageName}`))
+        await Comment.deleteMany({postId: req.params.id})
         await Post.deleteOne({_id: req.params.id})
+        fs.unlinkSync(path.resolve(__dirname, `../static/${post.imageName}`))
         res.status(200).json({messageEn: 'Delete successfully', messageRu: 'Успешно удалено'})
     } catch (e) {
         res.status(500).json(e)
